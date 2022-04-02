@@ -5,6 +5,7 @@ import (
 	"embed"
 	"errors"
 	"io/fs"
+	"log"
 	"math/rand"
 	"strings"
 	"time"
@@ -61,25 +62,49 @@ func IsValidWord(word string) bool {
 	return dictionar[sb.String()][word] == 1
 }
 
+func GetRandomStartingLetters() string {
+	randomIndex := random.Intn(len(dictionar))
+
+	i := 0
+	for k, _ := range dictionar {
+		if i == randomIndex {
+			return k
+		}
+		i += 1
+	}
+
+	log.Fatalln("Dict invalid")
+	return ""
+}
+
 func GetWordStartingWith(word string) (string, error) {
 	length := len(word)
-	if length < 2 {
+	if length == 1 {
 		return "", errors.New("Invalid Length")
 	}
 
-	var sb strings.Builder
+	//daca e length 1 generam random shit
 
-	//if word == "re" then sb is re
-	//if word == "restante" then sb is te
-	if length == 2 {
-		sb.WriteByte(word[0])
-		sb.WriteByte(word[1])
+	var tmpstr string
+
+	if length > 1 {
+		var sb strings.Builder
+
+		//if word == "re" then sb is re
+		//if word == "restante" then sb is te
+		if length == 2 {
+			sb.WriteByte(word[0])
+			sb.WriteByte(word[1])
+		} else {
+			sb.WriteByte(word[length-2])
+			sb.WriteByte(word[length-1])
+		}
+		tmpstr = sb.String()
 	} else {
-		sb.WriteByte(word[length-2])
-		sb.WriteByte(word[length-1])
+		tmpstr = GetRandomStartingLetters()
 	}
 
-	Cuvinte := dictionar[sb.String()]
+	Cuvinte := dictionar[tmpstr]
 	//If there is no word starting with that
 	if len(Cuvinte) == 0 {
 		return "", errors.New("no word starting with that prefix was found")
