@@ -4,6 +4,8 @@
 *.dll
 *.so
 *.dylib
+*.apk
+./fazan
 
 # Test binary, built with `go test -c`
 *.test
