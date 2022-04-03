@@ -47,6 +47,7 @@ func init() {
 	b := false
 	IsWordValid = &b
 	a = app.NewWithID("words.paul.abrudan")
+
 	w = a.NewWindow("Fazan")
 	w.SetTitle("Fazan")
 	emptyWidgetLabel = widget.NewLabel("")
@@ -102,7 +103,10 @@ func joacaBtnClick() {
 
 	nustiuButton = widget.NewButton("Nu stiu", idkFunc)
 
-	verifyButton = widget.NewButton("Verifica cuvantul", verifyFunc)
+	verifyButton = widget.NewButton("Verifica cuvantul", func() {
+		verifyFunc()
+		cuvantEntry.FocusGained()
+	})
 
 	w.SetContent(container.NewGridWithColumns(1,
 		emptyWidgetLabel, cuvantLabel, PuncteUtilizatorLabel, PuncteBotLabel, cuvantEntry, verifyButton, nustiuButton, emptyWidgetLabel, emptyWidgetLabel))
